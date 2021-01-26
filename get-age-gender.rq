@@ -23,9 +23,9 @@ SELECT DISTINCT ?sample ?biopsy_age ?gender WHERE {
   
   ?sample_id a edam:data_0842 ;
     sio:SIO_000672 ?sample ; 
-    sio:SIO_000300 ?id.
+    sio:SIO_000300 ?_sampleID.
   
-  FILTER (?id = ?_sampleID)
+  #FILTER (?id = ?_sampleID)
   
   
    	      ?sample sio:SIO_000217 [a obo:GENEPIO_0001775; sio:SIO_000300  ?biopsy_age ].
