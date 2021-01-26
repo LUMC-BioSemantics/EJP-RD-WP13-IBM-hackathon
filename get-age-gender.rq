@@ -1,0 +1,47 @@
+#+ endpoint: http://ejprd.fair-dtls.surf-hosted.nl:8093/blazegraph/namespace/sample-description/sparql
+#+ endpoint_in_url: False
+#+ description: Get age and gender info for a given sample ID
+#+ defaults:
+#+   - sampleID: sIBM1
+#+ transform: {
+#+     "sample": "?sample",
+#+     "biopsy_age": "?biopsy_age",
+#+     "gender": "?gender",
+#+     "$anchor": "sample"
+#+   }
+
+prefix : <http://purl.org/ejp-rd/ibm/metadata/example-rdf/> 
+prefix obo: <http://purl.obolibrary.org/obo/> 
+prefix sio: <http://semanticscience.org/resource/> 
+prefix edam: <http://edamontology.org/> 
+prefix efo: <http://www.ebi.ac.uk/efo/> 
+prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
+
+
+SELECT DISTINCT ?sample ?biopsy_age ?gender WHERE {
+  
+  
+  ?sample_id a edam:data_0842 ;
+    sio:SIO_000672 ?sample ; 
+    sio:SIO_000300 ?id.
+  
+  FILTER (?id = ?_sampleID)
+  
+  
+   	      ?sample sio:SIO_000217 [a obo:GENEPIO_0001775; sio:SIO_000300  ?biopsy_age ].
+  
+  
+  ?sampling_process_ a sio:SIO_001049 ;
+    sio:SIO_000229 ?sample .
+  
+  
+  ?role_1 a obo:OBI_1110087 ;
+    sio:SIO_000356 ?sampling_process_.
+  
+  
+  ?person a sio:SIO_000498 ;
+    sio:SIO_000217 [a obo:NCIT_C17357 ; sio:SIO_000642 ?gender] ;
+    sio:SIO_000228 ?role_1.
+  
+}
+
