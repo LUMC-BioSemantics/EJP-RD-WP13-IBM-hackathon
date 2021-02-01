@@ -1,0 +1,79 @@
+@prefix : <http://purl.org/ejp-rd/ibm/metadata/example-rdf/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix edam: <http://edamontology.org/> .
+@prefix efo: <http://www.ebi.ac.uk/efo/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+# an example rdf of sample information
+:person_ a sio:SIO_000498 ;
+    obo:RO_0002162 :taxon_ ;
+    sio:SIO_000217 :gender_ ; # has-quality :gender_
+    sio:SIO_000228 :role_1, :role_2 .
+
+:taxon_ a obo:NCBITaxon_9606 .
+
+
+:gender_ a obo:NCIT_C17357 ; # a gender
+    sio:SIO_000642 :gender_output_ .
+
+:gender_output_ a sio:SIO_010052 . # female | [sio:SIO_010048 (male)]
+
+
+:role_1 a obo:OBI_1110087 ; # a donor_role
+    sio:SIO_000356 :sampling_process_ ;
+    sio:SIO_000217 :biopsy_age_ . 
+
+
+:sampling_process_ a sio:SIO_001049 ;
+    sio:SIO_000291 :muscle_ ; # has-target sampled_tissue
+    sio:SIO_000229 :biosample_ . # has-output biosample
+
+
+:biosample_ a obo:OBI_0000671 ; # a sample_from_organism
+    sio:SIO_000628 :muscle_ ; # refers-to sampled_tissue
+    sio:SIO_000217 :biopsy_age_ ; # has-quality biopsy_age
+    sio:SIO_000362 obo:DOID_3429 ; # satisfies ibm_disease (cohort) NB put ibm_disease or amputee_control URI values in the CSV
+    sio:SIO_000095 :batch_ . # is-member-of batch
+
+
+:biosample_id a edam:data_0842 ; # type identifier
+    sio:SIO_000672 :biosample_ ; # is-identifier-for biosample
+    sio:SIO_000300 "sIBM1"^^xsd:string .
+
+
+:muscle_ a obo:FMA_30316 ; # muscle (should be one of the FMA values for the specific muscle entity in the CSV)
+    obo:BFO_0000050 :person_ . # part-of person
+
+
+:biopsy_age_ a obo:GENEPIO_0001775 ; # a subject_age_at_time_of_specimen_collection_
+    sio:SIO_000221 obo:UO_0000036 ; # has-unit year
+    sio:SIO_000300 "68"^^xsd:integer . # has-value age_value
+
+
+:batch_ a obo:NCIT_C67073 ; # a batch
+    sio:SIO_000300 "Oxford3"^^xsd:string .
+
+
+:role_2 a obo:OBI_0000097 ; # a study_participant_role
+    sio:SIO_000356 :measurement_process_ .
+
+
+:measurement_process_ a obo:OBI_0001926 ; # miRNA assay | [obo:OBI_0000424 (mRNA assay), efo:EFO_0001457 (lnc RNA assay), obo:OBI_0002118 (WES)]
+    sio:SIO_000230 :biosample_ ; # has-input biosample
+    sio:SIO_000291 :muscle_ ; # has-target sampled_tissue
+    sio:SIO_000229 :raw_sequencing_data_ . # has-output hts_dataset_output
+
+
+:raw_sequencing_data_ a obo:NCIT_C165232 ;
+    sio:SIO_000628 :muscle_ ; # refers-to sampled_tissue
+    obo:EUPATH_0001001 :sequencing_data_file_ . # data-file data_file_URI
+
+
+:sequencing_data_file_ a obo:NCIT_C171177 . # OPTIONAL: URI for sequencing dataset
+
+
+:molecule_ a obo:SO_0000276 ; # miRNA | [obo:SO_000234 (mRNA), obo:SO_0002035 (lncRNA), obo:SO_0000120 (coding transcript sequence or WES sequence)]
+    obo:BFO_0000050 :person_ ; # part-of person
+    sio:SIO_000642 :raw_sequencing_data_ . # is-base-for hts_dataset_output
