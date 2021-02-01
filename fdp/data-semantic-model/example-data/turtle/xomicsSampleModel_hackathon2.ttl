@@ -38,7 +38,7 @@
     sio:SIO_000095 :batch_ . # is-member-of batch
 
 
-:biosample_id a edam:data_0842 ; # type identifier
+:biosample_id_ a edam:data_0842 ; # type identifier
     sio:SIO_000672 :biosample_ ; # is-identifier-for biosample
     sio:SIO_000300 "sIBM1"^^xsd:string .
 
